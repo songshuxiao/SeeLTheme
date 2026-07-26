@@ -102,13 +102,26 @@ if (!class_exists('Typecho_Widget_Helper_Form_Element_Custom')) {
     }
 }
 
+// 主题初始化（兼容 Typecho 1.3.0 + PHP 8.4）
+function themeInit($archive) {
+    // PHP 8.4 兼容：屏蔽 Typecho 1.3.0 核心的隐式可空参数弃用警告
+    // （核心部分文件如 Widget/Contents/Attachment/Edit.php 仍存在 string $x = null 写法）
+    if (PHP_VERSION_ID >= 80400) {
+        $currentLevel = error_reporting();
+        $deprecatedMask = E_DEPRECATED | E_USER_DEPRECATED;
+        if (($currentLevel & $deprecatedMask) === $deprecatedMask) {
+            error_reporting($currentLevel & ~$deprecatedMask);
+        }
+    }
+}
+
 // 主题配置
 function themeConfig($form) {
     // 显示主题信息
     $infoHtml = '<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">';
     $infoHtml .= '<h2 style="margin: 0 0 10px 0; font-size: 24px;">🎨 SeeLTheme</h2>';
     $infoHtml .= '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">';
-    $infoHtml .= '<div><strong style="opacity: 0.8;">版本：</strong><span style="font-weight: 600;">1.20</span></div>';
+    $infoHtml .= '<div><strong style="opacity: 0.8;">版本：</strong><span style="font-weight: 600;">1.21</span></div>';
     $infoHtml .= '<div><strong style="opacity: 0.8;">作者：</strong><span style="font-weight: 600;">Jessadmin</span></div>';
     $infoHtml .= '<div><strong style="opacity: 0.8;">许可证：</strong><span>MIT License</span></div>';
     $infoHtml .= '</div>';
@@ -946,7 +959,7 @@ function themeAutoLoadScript() {
         return;
     }
     
-    $script = <<<EOT
+    $script = <<<'EOT'
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 检查是否支持自动加载
@@ -1304,6 +1317,19 @@ function getLatestComments($limit = 5) {
         ->limit($limit);
     $comments = $db->fetchAll($select);
     return $comments;
+}
+
+// 根据 cid 获取文章数据（兼容 Typecho 1.3.0，替代已不存在的 load() 方法）
+function getPostByCid($cid) {
+    $db = Typecho_Db::get();
+    $select = $db->select('cid', 'title', 'slug', 'created', 'modified', 'text',
+        'authorId', 'type', 'status', 'allowComment', 'allowPing', 'allowFeed')
+        ->from('table.contents')
+        ->where('cid = ?', $cid)
+        ->where('type = ?', 'post')
+        ->limit(1);
+    $post = $db->fetchRow($select);
+    return $post ? $post : null;
 }
 
 // 获取评论总数

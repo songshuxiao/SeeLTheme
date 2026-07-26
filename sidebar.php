@@ -192,8 +192,9 @@
         <div class="hot-posts-list">
             <?php foreach ($hotPosts as $index => $post): ?>
             <?php
+                // 兼容 Typecho 1.3.0：load() 方法不存在，改用 push() 注入文章数据
                 $postWidget = Typecho_Widget::widget('Widget_Abstract_Contents');
-                $postWidget->load($post['cid']);
+                $postWidget->push($post);
                 $postUrl = $postWidget->permalink;
             ?>
             <a href="<?php echo $postUrl; ?>" class="hot-post-item">
@@ -231,8 +232,12 @@
         <div class="latest-comments-list">
             <?php foreach ($comments as $comment): ?>
             <?php
+                // 兼容 Typecho 1.3.0：load() 方法不存在，通过 cid 查询文章数据后用 push() 注入
                 $post = Typecho_Widget::widget('Widget_Abstract_Contents');
-                $post->load($comment['cid']);
+                $postData = getPostByCid($comment['cid']);
+                if ($postData) {
+                    $post->push($postData);
+                }
                 $postUrl = $post->permalink;
             ?>
             <a href="<?php echo $postUrl; ?>" class="latest-comment-item">

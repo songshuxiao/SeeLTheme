@@ -221,8 +221,9 @@
                     <?php if (!empty($hotPosts)): ?>
                     <?php foreach ($hotPosts as $index => $post): ?>
                     <?php
+                        // 兼容 Typecho 1.3.0：load() 方法不存在，改用 push() 注入文章数据
                         $postWidget = Typecho_Widget::widget('Widget_Abstract_Contents');
-                        $postWidget->load($post['cid']);
+                        $postWidget->push($post);
                         $postUrl = $postWidget->permalink;
                     ?>
                     <a href="<?php echo $postUrl; ?>" class="mobile-hot-post-item">

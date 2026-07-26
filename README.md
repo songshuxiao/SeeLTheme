@@ -4,9 +4,10 @@
 
 一款现代化的 Typecho 博客主题，支持简洁化与玻璃态双主题自由切换。
 
-[![Version](https://img.shields.io/badge/version-1.20-blue.svg)](https://github.com/FeiFan86/SeeLTheme)
+[![Version](https://img.shields.io/badge/version-1.21-blue.svg)](https://github.com/FeiFan86/SeeLTheme)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Typecho](https://img.shields.io/badge/typecho-1.2+-brightgreen.svg)](https://typecho.org)
+[![Typecho](https://img.shields.io/badge/typecho-1.2~1.3+-brightgreen.svg)](https://typecho.org)
+[![PHP](https://img.shields.io/badge/PHP-7.2~8.4-777bb4.svg)](https://www.php.net)
 
 </div>
 
@@ -93,6 +94,19 @@
 cd /usr/themes
 git clone https://github.com/FeiFan86/SeeLTheme
 ```
+
+### 📌 兼容性说明（v1.21）
+
+本版本（v1.21）在原 v1.20 基础上进行了 Typecho 1.3.0 + PHP 8.4 兼容性适配，主要改动如下：
+
+- **修复 `load()` 方法调用**：原主题在 `sidebar.php` 和 `header.php` 中调用了已不存在的 `Widget_Abstract_Contents::load()` 方法（该方法在 Typecho 1.2.0/1.3.0 中均不存在，会触发 `__call` 空操作导致永久链接获取错误）。现已改用 `push()` 方法注入文章数据，并新增 `getPostByCid()` 辅助函数按 CID 查询文章。
+- **新增 `themeInit()` 钩子**：在 PHP 8.4 环境下自动屏蔽 Typecho 1.3.0 核心残留的隐式可空参数弃用警告（`E_DEPRECATED`），避免日志污染。
+- **保留旧式类名兼容**：主题继续使用 `Typecho_Db`、`Typecho_Widget`、`Typecho_Router`、`Widget_Options`、`Widget_Stat`、`Widget_Abstract_Contents` 等下划线风格类名，这些在 Typecho 1.3.0 中通过自动加载器的别名机制仍然可用。
+- **版本号**：主题内部版本号从 `1.20` 升至 `1.21`。
+
+支持的环境组合：
+- Typecho 1.2.0 ~ 1.3.0+
+- PHP 7.2 ~ 8.4
 
 ---
 
