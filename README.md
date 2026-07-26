@@ -91,9 +91,9 @@ cd /usr/themes
 git clone https://github.com/FeiFan86/SeeLTheme
 ```
 
-### 📌 兼容性说明（v1.21）
+### 📌 兼容性说明
 
-本版本（v1.30）在原 v1.20 基础上进行了 Typecho 1.3.0 + PHP 8.4 兼容性适配，主要改动如下：
+新版本在原 v1.20 基础上进行了 Typecho 1.3.0 + PHP 8.4 兼容性适配，主要改动如下：
 
 - **修复 `load()` 方法调用**：原主题在 `sidebar.php` 和 `header.php` 中调用了已不存在的 `Widget_Abstract_Contents::load()` 方法（该方法在 Typecho 1.2.0/1.3.0 中均不存在，会触发 `__call` 空操作导致永久链接获取错误）。现已改用 `push()` 方法注入文章数据，并新增 `getPostByCid()` 辅助函数按 CID 查询文章。
 - **新增 `themeInit()` 钩子**：在 PHP 8.4 环境下自动屏蔽 Typecho 1.3.0 核心残留的隐式可空参数弃用警告（`E_DEPRECATED`），避免日志污染。
