@@ -6,7 +6,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
  *
  * @package SeeLTheme
  * @author Jessadmin
- * @version 1.20
+ * @version 1.30
  * @link https://github.com/FeiFan86/SeeLTheme
  * @description 一款现代化的 Typecho 博客主题，支持简洁化与玻璃态双主题自由切换。主题内置丰富的功能模块，包括暗黑模式、自定义页面模板、主题设置导入导出、响应式设计等。简洁化主题干净利落，玻璃态主题炫酷美观，完美适配各种设备，为您的博客打造独特的视觉体验。
  */
