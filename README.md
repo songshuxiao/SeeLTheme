@@ -4,7 +4,7 @@
 
 一款现代化的 Typecho 博客主题，支持简洁化与玻璃态双主题自由切换。
 
-[![Version](https://img.shields.io/badge/version-1.21-blue.svg)](https://github.com/FeiFan86/SeeLTheme)
+[![Version](https://img.shields.io/badge/version-1.30-blue.svg)](https://github.com/FeiFan86/SeeLTheme)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Typecho](https://img.shields.io/badge/typecho-1.2~1.3+-brightgreen.svg)](https://typecho.org)
 [![PHP](https://img.shields.io/badge/PHP-7.2~8.4-777bb4.svg)](https://www.php.net)
